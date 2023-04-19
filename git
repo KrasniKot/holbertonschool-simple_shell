@@ -1,0 +1,6 @@
+#!/bin/bash
+rm .*.swp a.out
+git add .
+read commit
+git commit -m "$commit"
+git push origin Emanuel
