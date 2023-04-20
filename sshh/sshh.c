@@ -1,36 +1,51 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
+#include "shell.h"
 
 int main(void)
 {
 	int argc, i;
 	char *delim = " \n", *command = NULL, *command_cpy = NULL, *token;
-	char **argv;
-	size_t size = 0;
-	
-	
-	printf("$ ");
-	if (getline(&command, &size, stdin) == -1)
-			return (0);
+	char **argv = NULL;
+	size_t size = 1;
+	pid_t pid;
 
-	token = strtok(command, delim);
-
-	for (argc = 0; token; argc++)
-		token = strtok(NULL, delim);
-
-	argv = malloc(sizeof(char *) * argc);
-
-	token = strtok(command, delim);
-	for (i = 0; i < argc; i++)
+	while (1)
 	{
-		argv[i] = token;
+		printf("$ ");
+		if (getline(&command, &size, stdin) == -1)
+		{
+			free(command);
+			return (0);
+		}
+
+		command_cpy = strdup(command);
+		token = strtok(command, delim);
+	
+		for (argc = 0; token; argc++)
+			token = strtok(NULL, delim);
+	
+		argv = malloc(sizeof(char *) * argc);
+	
+		token = strtok(command_cpy, delim);
+		for (i = 0; i < argc; i++)
+		{
+			argv[i] = token;
+			token = strtok(NULL, delim);
+		}
+		argv[i] = NULL;
+		pid = fork();
+
+		if (pid == -1)
+		{
+			printf("Could't create child process\nExiting...\n");
+			return (0);
+		}
+		if (pid == 0)
+		{
+			execve(argv[0], argv, NULL);
+			perror("the re shell");
+		}
+		wait(NULL);
+		free(command), free(command_cpy), free(argv);
 	}
-	argv[i] = NULL;
-
-//	execve(argv[0], argv);
-
-	free(command), free (argv), free(command_cpy);
-	return(0);
+	return (1);
 }
