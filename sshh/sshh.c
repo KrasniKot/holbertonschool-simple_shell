@@ -3,19 +3,16 @@
 int main(void)
 {
 	int argc, i;
-	char *delim = " \n", *command = NULL, *command_cpy = NULL, *token;
+	char *delim = " \n", *command_cpy = NULL, *token;
 	char **argv = NULL;
 	size_t size = 1;
 	pid_t pid;
 
 	while (1)
 	{
-		printf("$ ");
-		if (getline(&command, &size, stdin) == -1)
-		{
-			free(command);
-			return (0);
-		}
+		char *command = getprompt();
+		if (!command)
+			return(0);
 
 		command_cpy = strdup(command);
 		token = strtok(command, delim);
