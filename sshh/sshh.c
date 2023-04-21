@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int main(void)
+int main(int ac, char **av, char **env)
 {
 	char **argv, *command_cpy = NULL;
 	pid_t pid;
@@ -13,13 +13,6 @@ int main(void)
 
 		command_cpy = strdup(command);
 		argv = tokenizer(command_cpy);
-
-/**Execve doesen't works properly:
- * 	- doesn't executes all commands.
- * 	- valgrind is not happy.
- * 	- child processes already does not accumulates (but returns),
- * 	and I have no idea if that's what's supposed to do.
- */
 		pid = fork();
 
 		if (pid == -1)
@@ -29,7 +22,7 @@ int main(void)
 		}
 		if (pid == 0)
 		{
-			execve(argv[0], argv, NULL);
+			execve(argv[0], argv, env);
 			perror("the re shell");
 			free(command), free(command_cpy), free(argv);
 			return (0);
