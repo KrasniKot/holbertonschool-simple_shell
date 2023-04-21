@@ -6,15 +6,14 @@ char **tokenizer(char *command)
 	char **argv = NULL, *delim = " \n";
 	char *command_cpy = strdup(command), *token = strtok(command_cpy, delim);
 	
-	for (argc = 0; token; argc++)
+	for (argc = 1; token; argc++)
 		token = strtok(NULL, delim);
 
 	printf("argc: %d\n", argc);
 	argv = malloc(sizeof(char *) * argc);
 
 	free(command_cpy);
-	command_cpy = strdup(command);
-	token = strtok(command_cpy, delim);
+	token = strtok(command, delim);
 	
 	for (i = 0; token; i++)
 	{
@@ -22,7 +21,7 @@ char **tokenizer(char *command)
 		printf("argv[%d]: %s\n", i, argv[i]);
 		token = strtok(NULL, delim);
 	}
+	argv[i] = NULL;
 
-	free(command_cpy);
 	return (argv);
 }
