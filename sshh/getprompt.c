@@ -4,14 +4,16 @@ char *getprompt(void)
 {
 	char *command = NULL;
 	size_t size = 0;
+	int interactive = isatty(STDIN_FILENO);
 
-	printf("$ ");
+	if (interactive == 1)
+		printf("$ ");
+
 	if (getline(&command, &size, stdin) == -1)
 	{
 		free(command);
 		printf("\nExiting...\n");
-		return (0);
+		exit(EXIT_FAILURE);
 	}
-
 	return (command);
 }
