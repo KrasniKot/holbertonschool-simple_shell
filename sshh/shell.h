@@ -8,5 +8,6 @@
 #include <sys/wait.h>
 
 char *getprompt(void);
+char **tokenizer(char *command);
 
 #endif

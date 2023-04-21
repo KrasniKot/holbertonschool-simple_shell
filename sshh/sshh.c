@@ -2,10 +2,7 @@
 
 int main(void)
 {
-	int argc, i;
-	char *delim = " \n", *command_cpy = NULL, *token;
-	char **argv = NULL;
-	size_t size = 1;
+	char **argv, *command_cpy = NULL;
 	pid_t pid;
 
 	while (1)
@@ -15,20 +12,15 @@ int main(void)
 			return(0);
 
 		command_cpy = strdup(command);
-		token = strtok(command, delim);
-	
-		for (argc = 0; token; argc++)
-			token = strtok(NULL, delim);
-	
-		argv = malloc(sizeof(char *) * argc);
-	
-		token = strtok(command_cpy, delim);
-		for (i = 0; i < argc; i++)
-		{
-			argv[i] = token;
-			token = strtok(NULL, delim);
-		}
-		argv[i] = NULL;
+		argv = tokenizer(command_cpy);
+
+/**Execve doesen't works properly:
+ * 	- doesn't executes all commands.
+ * 	- valgrind is not happy.
+ * 	- child processes accumulates.
+ */
+
+/*
 		pid = fork();
 
 		if (pid == -1)
@@ -41,7 +33,10 @@ int main(void)
 			execve(argv[0], argv, NULL);
 			perror("the re shell");
 		}
+		if (pid == 0)
+			return (0);
 		wait(NULL);
+		*/
 		free(command), free(command_cpy), free(argv);
 	}
 	return (1);

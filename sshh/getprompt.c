@@ -9,7 +9,7 @@ char *getprompt(void)
 	if (getline(&command, &size, stdin) == -1)
 	{
 		free(command);
-		printf("getline failed\nExiting...\n");
+		printf("\nExiting...\n");
 		return (0);
 	}
 
