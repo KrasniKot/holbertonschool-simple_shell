@@ -12,7 +12,6 @@ char *getprompt(void)
 	if (getline(&command, &size, stdin) == -1)
 	{
 		free(command);
-		printf("\nExiting...\n");
 		exit(EXIT_FAILURE);
 	}
 	return (command);

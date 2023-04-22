@@ -24,7 +24,7 @@ char *get_env(char *env_name)
 			continue;
 		}
 
-		if (!(strcmp(var_name, env)))
+		if (!(strcmp(var_name, env_name)))
 		{
 			var_name = strtok(NULL, "=");
 			if (var_name)

@@ -1,0 +1,15 @@
+#include "shell.h"
+
+int execute_sel(char *avO, char **av)
+{
+	int i;
+
+	for (i = 0, avO[i], i++)
+		if (avO[i] == 47)
+		{
+			execve(avO, av, environ);
+			perror("shell");
+			return (1);
+		}
+
+}

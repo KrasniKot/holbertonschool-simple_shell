@@ -1,9 +1,9 @@
 #include "shell.h"
 
-char **tokenizer(char *command)
+char **tokenizer(char *command, char *delim)
 {
 	int i, argc;
-	char **argv = NULL, *delim = " \n\t";
+	char **argv = NULL;
 	char *command_cpy = strdup(command), *token = strtok(command_cpy, delim);
 
 	for (argc = 1; token; argc++)
