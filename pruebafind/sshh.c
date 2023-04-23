@@ -21,7 +21,7 @@ int main(int ac, char **av)
 		where = findcmd(argv[0]);
 		printf("where: %s\n", where);
 
-		free(command), free(command_cpy); //free(argv);
+		free(command), free(command_cpy), free(argv);
 	}
 	return (0);
 }
