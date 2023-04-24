@@ -5,9 +5,10 @@ char *findcmd(char *cmd)
 	struct stat st;
 
 	int i, k = strlen(cmd);
+	char *path = get_env("PATH"), **tpath = tokenizer(path, ":");
+	char *in;
 	char u_cmd[k + 2];
-	char *path = get_env("PATH"), *delim = ":", where[40];
-	char **tpath = tokenizer(path, delim);
+	char where[40];
 
 	u_cmd[0] = 47;
 	for (i = 1; i <= k; i++)
@@ -22,12 +23,13 @@ char *findcmd(char *cmd)
 		if (!stat(where, &st))
 		{
 			printf("comamnd is in: %s\n", where);
-			return (strcat(tpath[i], u_cmd));
+			in = strcat(tpath[i], u_cmd);
+			free(path), free(tpath);
+			return (in);
 		}
 	}
 
 	free(path), free(tpath);
-
 	printf("command not found\n");
 	return(NULL);
 }
