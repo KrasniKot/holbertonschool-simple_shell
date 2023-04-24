@@ -10,16 +10,14 @@ int main(int ac, char **av)
 	while (1)
 	{
 		command = getprompt();
-
 		if (!command)
 		{
 			free(path);
 			return (1);
 		}
+
 		path = get_env("PATH");
-
 		command_cpy = strdup(command);
-
 		argv = tokenizer(command_cpy, delim);
 		exe = eway(command, command_cpy, argv, path);
 

@@ -27,6 +27,7 @@ char *findcmd(char *cmd, char *path)
 		}
 	}
 
+	in = strcat(tpath[0], u_cmd);
 	free(tpath);
-	return(NULL);
+	return (in);
 }

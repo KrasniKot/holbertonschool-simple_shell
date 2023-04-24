@@ -29,13 +29,17 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
 		{
 			return (execute(cmd, cmdcpy, av, path));
 		}
-	return (exec_no_path(av, path));
+
+	return (exec_no_path(av, path, cmdcpy, cmd));
 }
 
-int exec_no_path(char **av, char *path)
+int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 {
 	char *where = findcmd(av[0], path);
 
+	av[0] = where;
+
+	execute(cmd, cmdcpy, av, path);
 
 	return (0);
 }
