@@ -20,7 +20,7 @@ char *get_env(char *env_name)
 		var_name = strtok(env_var, "=");
 		if (var_name == NULL)
 		{
-			free(var_name);
+			free(var_name), free(env_var);
 			continue;
 		}
 

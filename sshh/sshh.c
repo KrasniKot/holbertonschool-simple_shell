@@ -2,35 +2,28 @@
 
 int main(int ac, char **av)
 {
-	char **argv, *command_cpy = NULL;
+	char *command_cpy = NULL;
+	char *path, *delim = " \n\t", *command, **argv;
+	int exe;
 	pid_t pid;
 
 	while (1)
 	{
-		char *delim = " \n\t";
-		char *command = getprompt();
+		command = getprompt();
 
 		if (!command)
+		{
+			free(path);
 			return (1);
+		}
+		path = get_env("PATH");
 
 		command_cpy = strdup(command);
-		argv = tokenizer(command_cpy, delim);
-		pid = fork();
-		if (pid == -1)
-		{
-			printf("Could't create child process\nExiting...\n");
-			return (1);
-		}
-		else if (!pid)
-		{
-			execve(argv[0], argv, environ);
-			perror("shell");
-			free(command), free(command_cpy), free(argv);
-			return (1);
-		}
 
-		wait(NULL);
-		free(command), free(command_cpy), free(argv);
+		argv = tokenizer(command_cpy, delim);
+		exe = eway(command, command_cpy, argv, path);
+
+		free(command), free(command_cpy), free(argv), free(path);
 	}
 	return (0);
 }

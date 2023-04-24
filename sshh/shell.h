@@ -8,9 +8,15 @@ extern char **environ;
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 char *getprompt(void);
 char **tokenizer(char *command, char *delim);
 char *get_env(char *env_name);
+int eway(char *cmd, char *cmdcpy, char **av, char *path);
+int execute(char *command, char *command_cpy, char **av, char *path);
+int exec_no_path(char **av, char *path);
+char *findcmd(char *cmd, char *path);
 
 #endif
