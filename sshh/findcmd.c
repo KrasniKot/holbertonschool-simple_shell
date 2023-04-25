@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/**
+ * findcmd - finds the route of the given command.
+ * @cmd: command to be found.
+ * @path: PATH.
+ * Return: if command is found the route of it, any route if not.
+ */
 char *findcmd(char *cmd, char *path)
 {
 	struct stat st;
@@ -14,7 +20,6 @@ char *findcmd(char *cmd, char *path)
 	for (i = 1; i <= k; i++)
 		u_cmd[i] = cmd[i - 1];
 	u_cmd[k + 1] = '\0';
-
 	for (i = 0; tpath[i]; i++)
 	{
 		strcpy(where, tpath[i]);
@@ -26,7 +31,6 @@ char *findcmd(char *cmd, char *path)
 			return (in);
 		}
 	}
-
 	in = strcat(tpath[0], u_cmd);
 	free(tpath);
 	return (in);

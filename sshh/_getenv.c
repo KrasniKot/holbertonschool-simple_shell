@@ -2,16 +2,15 @@
 
 /**
  * get_env - search the environment variable env_name
- * @env _name: the enviroment variable to look for
+ * @env_name: the enviroment variable to look for
  * Return: the string associated to env_name variable
  */
-
 char *get_env(char *env_name)
 {
 	char *env_var = NULL, *var_name = NULL, *env_value = NULL;
 	int i;
 
-	if (!environ|| !env_name)
+	if (!environ || !env_name)
 		return (NULL);
 
 	for (i = 0; environ[i]; i++)
@@ -23,7 +22,6 @@ char *get_env(char *env_name)
 			free(var_name), free(env_var);
 			continue;
 		}
-
 		if (!(strcmp(var_name, env_name)))
 		{
 			var_name = strtok(NULL, "=");
