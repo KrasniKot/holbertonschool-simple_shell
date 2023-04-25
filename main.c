@@ -10,8 +10,11 @@ int main(int ac, char **av)
 {
 	char *command_cpy = NULL;
 	char *path, *delim = " \n\t", *command = NULL, **argv;
-	int exe, interactive = isatty(STDIN_FILENO);
+	int interactive = isatty(STDIN_FILENO);
 	size_t size = 0;
+
+	(void)av;
+	(void)ac;
 
 	while (1)
 	{
@@ -35,7 +38,7 @@ int main(int ac, char **av)
 		path = get_env("PATH");
 		command_cpy = strdup(command);
 		argv = tokenizer(command_cpy, delim);
-		exe = eway(command, command_cpy, argv, path);
+		eway(command, command_cpy, argv, path);
 		free(command_cpy), free(argv), free(path);
 	}
 	return (0);

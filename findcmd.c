@@ -13,9 +13,10 @@ char *findcmd(char *cmd, char *path)
 	int i, k = strlen(cmd);
 	char **tpath = tokenizer(path, ":");
 	char *in;
-	char u_cmd[k + 2];
+	char *u_cmd;
 	char where[60];
 
+	u_cmd = malloc(sizeof(char) * (k + 2));
 	u_cmd[0] = 47;
 	for (i = 1; i <= k; i++)
 		u_cmd[i] = cmd[i - 1];
@@ -27,11 +28,11 @@ char *findcmd(char *cmd, char *path)
 		if (!stat(where, &st))
 		{
 			in = strcat(tpath[i], u_cmd);
-			free(tpath);
+			free(tpath), free(u_cmd);
 			return (in);
 		}
 	}
 	in = strcat(tpath[0], u_cmd);
-	free(tpath);
+	free(tpath), free(u_cmd);
 	return (in);
 }
