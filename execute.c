@@ -78,7 +78,7 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
  */
 int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 {
-	char *where = findcmd(av[0], path), *cmdc = av[0];
+	char *where = findcmd(av[0], path);
 
 	av[0] = where;
 
@@ -86,6 +86,7 @@ int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 	{
 		return (execute(cmd, cmdcpy, av, path));
 	}
+	av[0] = "";
 	execve(av[0], av, environ);
 	perror("Shell");
 	free(path);
