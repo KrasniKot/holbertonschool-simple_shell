@@ -85,5 +85,6 @@ int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 		return (execute(cmd, cmdcpy, av, path));
 	}
 	printf("Shell: %s: command not found\n", cmdc);
+	free(path);
 	return (0);
 }
