@@ -11,7 +11,6 @@ extern char **environ;
 #include <sys/types.h>
 #include <sys/stat.h>
 
-char *getprompt(void);
 char **tokenizer(char *command, char *delim);
 char *get_env(char *env_name);
 int eway(char *cmd, char *cmdcpy, char **av, char *path);

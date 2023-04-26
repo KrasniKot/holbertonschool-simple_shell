@@ -30,7 +30,7 @@ int main(int ac, char **av)
 			free(path);
 			return (0);
 		}
-		if (command[0] == '\n')
+		if (command[0] == 10 || command[0] == 32 || command[0] == 9)
 			continue;
 
 		command_cpy = strdup(command);
