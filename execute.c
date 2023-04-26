@@ -61,7 +61,7 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
 			execve(av[0], av, environ);
 			perror("Shell");
 			free(path);
-			return (0);
+			return (1);
 		}
 	}
 
@@ -91,5 +91,5 @@ int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 	execve(av[0], av, environ);
 	perror("Shell");
 	free(path);
-	return (0);
+	return (1);
 }

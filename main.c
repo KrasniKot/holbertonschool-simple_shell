@@ -23,7 +23,7 @@ int main(int ac, char **av)
 		if (getline(&command, &size, stdin) == -1)
 		{
 			free(command), free(path);
-			exit(EXIT_FAILURE);
+			exit(EXIT_SUCCESS);
 		}
 		if (!command)
 		{
