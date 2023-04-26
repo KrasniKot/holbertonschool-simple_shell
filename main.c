@@ -12,8 +12,7 @@ int main(int ac, char **av)
 	char *path, *delim = " \n\t", *command = NULL, **argv;
 	int interactive = isatty(STDIN_FILENO);
 	size_t size = 0;
-	(void)av;
-	(void)ac;
+	(void)av, (void)ac;
 
 	while (1)
 	{
@@ -37,7 +36,7 @@ int main(int ac, char **av)
 		command_cpy = strdup(command);
 		argv = tokenizer(command_cpy, delim);
 		eway(command, command_cpy, argv, path);
-		free(command_cpy), free(argv), free(path);
+		free(command_cpy), free(argv);
 	}
 	return (0);
 }

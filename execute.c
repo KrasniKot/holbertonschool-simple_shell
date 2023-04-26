@@ -10,6 +10,7 @@
  */
 int execute(char *command, char *command_cpy, char **av, char *path)
 {
+	int status = 0;
 	pid_t pid = fork();
 
 	if (pid == -1)
@@ -24,7 +25,8 @@ int execute(char *command, char *command_cpy, char **av, char *path)
 		free(command), free(command_cpy), free(av), free(path);
 		exit(EXIT_FAILURE);
 	}
-	wait(NULL);
+	wait(&status);
+	free(path);
 	return (0);
 }
 
@@ -56,6 +58,7 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
 				return (execute(cmd, cmdcpy, av, path));
 			}
 			printf("Shell: %s: No such file or directory\n", av[0]);
+			free(path);
 			return (0);
 		}
 	}
@@ -74,13 +77,11 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
  */
 int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 {
-	struct stat st;
-
 	char *where = findcmd(av[0], path), *cmdc = av[0];
 
 	av[0] = where;
 
-	if (!stat(where, &st))
+	if (where)
 	{
 		return (execute(cmd, cmdcpy, av, path));
 	}
