@@ -51,13 +51,14 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
 	}
 	for (i = 0; cmd[i]; i++)
 	{
-		if (cmd[i] == 47)
+		if (cmd[i] == 47 || cmd[i] == 91)
 		{
 			if (!stat(av[0], &st))
 			{
 				return (execute(cmd, cmdcpy, av, path));
 			}
-			printf("Shell: %s: No such file or directory\n", av[0]);
+			execve(av[0], av, environ);
+			perror("Shell");
 			free(path);
 			return (0);
 		}
@@ -85,7 +86,8 @@ int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 	{
 		return (execute(cmd, cmdcpy, av, path));
 	}
-	printf("Shell: %s: command not found\n", cmdc);
+	execve(av[0], av, environ);
+	perror("Shell");
 	free(path);
 	return (0);
 }
