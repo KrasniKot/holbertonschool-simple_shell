@@ -16,6 +16,7 @@ int execute(char *command, char *command_cpy, char **av, char *path)
 	if (pid == -1)
 	{
 		perror("Error");
+		free(path);
 		return (-1);
 	}
 	if (!pid)

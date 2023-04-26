@@ -31,7 +31,10 @@ int main(int ac, char **av)
 			return (0);
 		}
 		if (command[0] == 10 || command[0] == 32 || command[0] == 9)
+		{
+			free(path);
 			continue;
+		}
 
 		command_cpy = strdup(command);
 		argv = tokenizer(command_cpy, delim);
