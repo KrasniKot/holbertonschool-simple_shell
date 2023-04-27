@@ -10,7 +10,7 @@
  */
 int execute(char *command, char *command_cpy, char **av, char *path)
 {
-	int status = 0;
+	int status, exit_status;
 	pid_t pid = fork();
 
 	if (pid == -1)
@@ -28,16 +28,15 @@ int execute(char *command, char *command_cpy, char **av, char *path)
 			free(path);
 			exit(EXIT_FAILURE);
 		}
-		return (EXIT_SUCCESS);
 	}
 	waitpid(pid, &status, 0);
 
-	if (WIFEXITED(status) && status > 255)
+	if (WIFEXITED(status))
 	{
-		 status = status >> 8;
+		exit_status = WEXITSTATUS(status);
 	}
 	free(path);
-	return (status);
+	return (exit_status);
 }
 
 /**
@@ -59,7 +58,7 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
 		if (!strcmp(av[0], "exit"))
 		{
 			free(cmd), free(cmdcpy), free(av), free(path);
-			exit(EXIT_SUCCESS);
+			exit(2);
 		}
 	}
 	for (i = 0; cmd[i]; i++)
@@ -73,7 +72,7 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
 			execve(av[0], av, environ);
 			perror("Shell");
 			free(path);
-			return (1);
+			return (127);
 		}
 	}
 
@@ -101,12 +100,8 @@ int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 		av[0] = where;
 		return (execute(cmd, cmdcpy, av, path));
 	}
-	if (av[0] && strcmp(av[0], " "))
-	{
-		av[0] = "";
-		execve(av[0], av, environ);
-		perror("Shell");
-	}
+
+	dprintf(STDERR_FILENO, "Shell: 1: %s: not found\n", av[0]);
 	free(path);
-	return (1);
+	return (127);
 }
