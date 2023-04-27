@@ -17,8 +17,7 @@ int main(int ac, char **av)
 
 	while (1)
 	{
-		/*path = get_env("PATH");*/
-		path = NULL;
+		path = get_env("PATH");
 		if (interactive == 1)
 			printf("$ ");
 
