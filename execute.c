@@ -30,9 +30,14 @@ int execute(char *command, char *command_cpy, char **av, char *path)
 		}
 		return (EXIT_SUCCESS);
 	}
-	wait(&status);
+	waitpid(pid, &status, 0);
+
+	if (WIFEXITED(status) && status > 255)
+	{
+		 status = status >> 8;
+	}
 	free(path);
-	return (0);
+	return (status);
 }
 
 /**
