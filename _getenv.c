@@ -17,19 +17,22 @@ char *get_env(char *env_name)
 	{
 		env_var = strdup(environ[i]);
 		var_name = strtok(env_var, "=");
-		if (var_name == NULL)
+		if (!var_name)
 		{
 			free(var_name), free(env_var);
 			continue;
 		}
-		if (!(strcmp(var_name, env_name)))
+		else
 		{
-			var_name = strtok(NULL, "=");
-			if (var_name)
+			if (!(strcmp(var_name, env_name)))
 			{
-				env_value = strdup(var_name);
-				free(env_var);
-				return (env_value);
+				var_name = strtok(NULL, "=");
+				if (var_name)
+				{
+					env_value = strdup(var_name);
+					free(env_var);
+					return (env_value);
+				}
 			}
 		}
 		free(env_var);

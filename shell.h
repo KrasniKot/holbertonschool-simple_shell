@@ -7,9 +7,9 @@ extern char **environ;
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 
 char **tokenizer(char *command, char *delim);
 char *get_env(char *env_name);

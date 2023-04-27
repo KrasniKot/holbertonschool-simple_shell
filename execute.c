@@ -21,12 +21,16 @@ int execute(char *command, char *command_cpy, char **av, char *path)
 	}
 	if (!pid)
 	{
-		execve(av[0], av, environ);
-		perror("Shell");
-		free(command), free(command_cpy), free(av), free(path);
-		exit(EXIT_FAILURE);
+		if (execve(av[0], av, environ) == -1)
+		{
+			perror("Shell");
+			free(command), free(command_cpy), free(av);
+			free(path);
+			exit(EXIT_FAILURE);
+		}
+		return (EXIT_SUCCESS);
 	}
-	wait(&status);
+
 	free(path);
 	return (0);
 }
@@ -78,7 +82,7 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
  * @cmdcpy: @command duplicated.
  * @av: each word of command.
  * @path: PATH.
- * Return: calls to execute if the command exists, 0 if not.
+ * Return: calls to execute if the command exists, 1 if not.
  */
 int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 {
