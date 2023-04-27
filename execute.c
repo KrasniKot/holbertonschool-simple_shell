@@ -6,7 +6,7 @@
  * @command_cpy: @command duplicated.
  * @av: each word of command.
  * @path: PATH.
- * Return: if couldn't create child proccess -1, 0 if success.
+ * Return: if couldn't create child proccess -1, exit status if success.
  */
 int execute(char *command, char *command_cpy, char **av, char *path)
 {
@@ -45,7 +45,7 @@ int execute(char *command, char *command_cpy, char **av, char *path)
  * @cmdcpy: @command duplicated.
  * @av: each word of command.
  * @path: PATH.
- * Return: calls the concerned function.
+ * Return: calls the concerned function or 127 if it fails.
  */
 int eway(char *cmd, char *cmdcpy, char **av, char *path)
 {
@@ -57,8 +57,14 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
 	{
 		if (!strcmp(av[0], "exit"))
 		{
+			if (av[1])
+			{
+				free(cmd), free(cmdcpy), free(path);
+				free(av);
+				exit(2);
+			}
 			free(cmd), free(cmdcpy), free(av), free(path);
-			exit(2);
+			exit(EXIT_SUCCESS);
 		}
 	}
 	for (i = 0; cmd[i]; i++)
@@ -86,7 +92,7 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
  * @cmdcpy: @command duplicated.
  * @av: each word of command.
  * @path: PATH.
- * Return: calls to execute if the command exists, 1 if not.
+ * Return: calls to execute if the command exists, 127 if not.
  */
 int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 {
