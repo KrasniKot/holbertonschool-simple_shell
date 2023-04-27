@@ -30,7 +30,7 @@ int execute(char *command, char *command_cpy, char **av, char *path)
 		}
 		return (EXIT_SUCCESS);
 	}
-
+	wait(&status);
 	free(path);
 	return (0);
 }
