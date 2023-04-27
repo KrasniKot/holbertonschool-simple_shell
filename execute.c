@@ -107,7 +107,11 @@ int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 		return (execute(cmd, cmdcpy, av, path));
 	}
 
+	if (!av[0])
+		return (0);
+
 	dprintf(STDERR_FILENO, "Shell: 1: %s: not found\n", av[0]);
-	free(path);
+	if (path && strlen(path))
+		free(path);
 	return (127);
 }

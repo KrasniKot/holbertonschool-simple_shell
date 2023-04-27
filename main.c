@@ -17,13 +17,16 @@ int main(int ac, char **av)
 
 	while (1)
 	{
-		path = get_env("PATH");
+		/*path = get_env("PATH");*/
+		path = NULL;
 		if (interactive == 1)
 			printf("$ ");
 
 		if (getline(&command, &size, stdin) == -1)
 		{
-			free(command), free(path);
+			free(command);
+			if (path && strlen(path))
+				free(path);
 			exit(status);
 		}
 		if (!command)
