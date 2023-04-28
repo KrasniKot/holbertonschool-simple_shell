@@ -45,12 +45,12 @@ int execute(char *command, char *command_cpy, char **av, char *path)
  * @cmdcpy: @command duplicated.
  * @av: each word of command.
  * @path: PATH.
+ * @count: Number of iterations that main while loop executed.
  * Return: calls the concerned function or 127 if it fails.
  */
 int eway(char *cmd, char *cmdcpy, char **av, char *path, int count)
 {
 	struct stat st;
-
 	int i;
 
 	if (av[0])
@@ -69,30 +69,24 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path, int count)
 		if (!strcmp(av[0], "env"))
 		{
 			for (i = 0; environ[i]; i++)
-			{
-					printf("%s\n", environ[i]);
-			}
+				printf("%s\n", environ[i]);
 			free(path);
 			return (0);
 		}
 	}
-
 	for (i = 0; cmd[i]; i++)
 	{
 		if (cmd[i] == 47 || cmd[i] == 91)
 		{
 			if (!stat(av[0], &st))
-			{
 				return (execute(cmd, cmdcpy, av, path));
-			}
 			execve(av[0], av, environ);
 			perror("Shell");
 			free(path);
 			return (127);
 		}
 	}
-	return (exec_no_path(av, path, cmdcpy, cmd));
-
+	return (exec_no_path(av, path, cmdcpy, cmd, count));
 }
 
 /**
@@ -101,9 +95,10 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path, int count)
  * @cmdcpy: @command duplicated.
  * @av: each word of command.
  * @path: PATH.
+ * @count: Number of iterations that main while loop executed.
  * Return: calls to execute if the command exists, 127 if not.
  */
-int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
+int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd, int count)
 {
 	char *where = NULL;
 
@@ -123,7 +118,7 @@ int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 		return (0);
 	}
 
-	dprintf(STDERR_FILENO, "./hsh: 1: %s: not found\n", av[0]);
+	dprintf(STDERR_FILENO, "./hsh: %d: %s: not found\n", count, av[0]);
 	if (path && strlen(path))
 		free(path);
 	return (127);
