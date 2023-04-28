@@ -8,11 +8,11 @@
  */
 int main(int ac, char **av)
 {
-	char *command_cpy = NULL;
+	char *command_cpy = NULL, *shname = av[0];
 	char *path, *delim = " \n\t", *command = NULL, **argv;
 	int interactive = isatty(STDIN_FILENO);
 	size_t size = 0;
-	(void)av;
+	int status = 0, count = 0, b;
 	(void)ac;
 
 	while (1)
@@ -23,21 +23,26 @@ int main(int ac, char **av)
 
 		if (getline(&command, &size, stdin) == -1)
 		{
-			free(command), free(path);
-			exit(EXIT_FAILURE);
+			free(command);
+			if (path && strlen(path))
+				free(path);
+			exit(status);
 		}
 		if (!command)
 		{
 			free(path);
-			return (0);
+			return (status);
 		}
-		if (command[0] == '\n')
-			continue;
 
 		command_cpy = strdup(command);
 		argv = tokenizer(command_cpy, delim);
-		eway(command, command_cpy, argv, path);
-		free(command_cpy), free(argv), free(path);
+		b = built_call(command, command_cpy, argv, path, count);
+		if (b == 1)
+			status = eway(command, command_cpy, argv, path, shname);
+		else
+			status = b;
+		free(command_cpy), free(argv);
+		count++;
 	}
-	return (0);
+	return (status);
 }

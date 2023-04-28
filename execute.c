@@ -2,30 +2,41 @@
 
 /**
  * execute - creates a child process and executes.
- * @command: command to be executed.
- * @command_cpy: @command duplicated.
+ * @cmd: command to be executed.
+ * @cmdcpy: @command duplicated.
  * @av: each word of command.
  * @path: PATH.
- * Return: if couldn't create child proccess -1, 0 if success.
+ * Return: if couldn't create child proccess -1, exit status if success.
  */
-int execute(char *command, char *command_cpy, char **av, char *path)
+int execute(char *cmd, char *cmdcpy, char **av, char *path)
 {
+	int status, exit_status;
 	pid_t pid = fork();
 
 	if (pid == -1)
 	{
 		perror("Error");
+		free(path);
 		return (-1);
 	}
 	if (!pid)
 	{
-		execve(av[0], av, environ);
-		perror("Shell");
-		free(command), free(command_cpy), free(av), free(path);
-		exit(EXIT_FAILURE);
+		if (execve(av[0], av, environ) == -1)
+		{
+			perror("Shell");
+			free(cmd), free(cmdcpy), free(av);
+			free(path);
+			exit(errno);
+		}
 	}
-	wait(NULL);
-	return (0);
+	waitpid(pid, &status, 0);
+
+	if (WIFEXITED(status))
+	{
+		exit_status = WEXITSTATUS(status);
+	}
+	free(path);
+	return (exit_status);
 }
 
 /**
@@ -34,34 +45,27 @@ int execute(char *command, char *command_cpy, char **av, char *path)
  * @cmdcpy: @command duplicated.
  * @av: each word of command.
  * @path: PATH.
- * Return: calls the concerned function.
+ * @shn: Shell name.
+ * Return: calls the concerned function or 127 if it fails.
  */
-int eway(char *cmd, char *cmdcpy, char **av, char *path)
+int eway(char *cmd, char *cmdcpy, char **av, char *path, char *shn)
 {
 	struct stat st;
-
 	int i;
 
-	if (!strcmp(av[0], "exit"))
-	{
-		free(cmd), free(cmdcpy), free(av), free(path);
-		exit(EXIT_SUCCESS);
-	}
 	for (i = 0; cmd[i]; i++)
 	{
-		if (cmd[i] == 47)
+		if (cmd[i] == 47 || cmd[i] == 91)
 		{
 			if (!stat(av[0], &st))
-			{
 				return (execute(cmd, cmdcpy, av, path));
-			}
-			printf("Shell: %s: No such file or directory\n", av[0]);
-			return (0);
+			execve(av[0], av, environ);
+			perror("Shell");
+			free(path);
+			return (127);
 		}
 	}
-
-	return (exec_no_path(av, path, cmdcpy, cmd));
-
+	return (exec_no_path(av, path, cmdcpy, cmd, shn));
 }
 
 /**
@@ -70,21 +74,31 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
  * @cmdcpy: @command duplicated.
  * @av: each word of command.
  * @path: PATH.
- * Return: calls to execute if the command exists, 0 if not.
+ * @shn: Shell name.
+ * Return: calls to execute if the command exists, 127 if not.
  */
-int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
+int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd, char *shn)
 {
-	struct stat st;
+	char *where = NULL;
 
-	char *where = findcmd(av[0], path), *cmdc = av[0];
+	if (av[0])
+		where = findcmd(av[0], path);
 
-	av[0] = where;
-
-	if (!stat(where, &st))
+	if (av[0] && where)
 	{
+		av[0] = where;
 		return (execute(cmd, cmdcpy, av, path));
 	}
-	printf("Shell: %s: command not found\n", cmdc);
-	free(path);
-	return (0);
+
+	if (!av[0])
+	{
+		if (path)
+			free(path);
+		return (0);
+	}
+
+	dprintf(STDERR_FILENO, "%s: 1: %s: not found\n", shn, av[0]);
+	if (path && strlen(path))
+		free(path);
+	return (127);
 }
