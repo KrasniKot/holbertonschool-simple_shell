@@ -86,7 +86,7 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path, int count)
 			return (127);
 		}
 	}
-	return (exec_no_path(av, path, cmdcpy, cmd, count));
+	return (exec_no_path(av, path, cmdcpy, cmd));
 }
 
 /**
@@ -95,10 +95,9 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path, int count)
  * @cmdcpy: @command duplicated.
  * @av: each word of command.
  * @path: PATH.
- * @count: Number of iterations that main while loop executed.
  * Return: calls to execute if the command exists, 127 if not.
  */
-int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd, int count)
+int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd)
 {
 	char *where = NULL;
 
@@ -118,7 +117,7 @@ int exec_no_path(char **av, char *path, char *cmdcpy, char *cmd, int count)
 		return (0);
 	}
 
-	dprintf(STDERR_FILENO, "./hsh: %d: %s: not found\n", count, av[0]);
+	dprintf(STDERR_FILENO, "./hsh: 1: %s: not found\n", av[0]);
 	if (path && strlen(path))
 		free(path);
 	return (127);
