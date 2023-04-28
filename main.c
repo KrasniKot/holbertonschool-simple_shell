@@ -12,7 +12,7 @@ int main(int ac, char **av)
 	char *path, *delim = " \n\t", *command = NULL, **argv;
 	int interactive = isatty(STDIN_FILENO);
 	size_t size = 0;
-	int status = 1;
+	int status = 0, count = 0;
 	(void)av, (void)ac;
 
 	while (1)
@@ -36,8 +36,9 @@ int main(int ac, char **av)
 
 		command_cpy = strdup(command);
 		argv = tokenizer(command_cpy, delim);
-		status = eway(command, command_cpy, argv, path);
+		status = eway(command, command_cpy, argv, path, count);
 		free(command_cpy), free(argv);
+		count++;
 	}
 	return (status);
 }

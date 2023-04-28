@@ -47,7 +47,7 @@ int execute(char *command, char *command_cpy, char **av, char *path)
  * @path: PATH.
  * Return: calls the concerned function or 127 if it fails.
  */
-int eway(char *cmd, char *cmdcpy, char **av, char *path)
+int eway(char *cmd, char *cmdcpy, char **av, char *path, int count)
 {
 	struct stat st;
 
@@ -57,7 +57,7 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
 	{
 		if (!strcmp(av[0], "exit"))
 		{
-			if (av[1])
+			if (av[1] || count > 0)
 			{
 				free(cmd), free(cmdcpy), free(path);
 				free(av);
@@ -66,7 +66,17 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
 			free(cmd), free(cmdcpy), free(av), free(path);
 			exit(EXIT_SUCCESS);
 		}
+		if (!strcmp(av[0], "env"))
+		{
+			for (i = 0; environ[i]; i++)
+			{
+					printf("%s\n", environ[i]);
+			}
+			free(path);
+			return (0);
+		}
 	}
+
 	for (i = 0; cmd[i]; i++)
 	{
 		if (cmd[i] == 47 || cmd[i] == 91)
@@ -81,7 +91,6 @@ int eway(char *cmd, char *cmdcpy, char **av, char *path)
 			return (127);
 		}
 	}
-
 	return (exec_no_path(av, path, cmdcpy, cmd));
 
 }
