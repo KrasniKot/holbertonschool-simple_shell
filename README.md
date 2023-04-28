@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://github.com/KrasniKot/holbertonschool-simple_shell">
-    <img src="https://raw.githubusercontent.com/computefoundation/gnu-linux-shell-scripting/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://raw.githubusercontent.com/computefoundation/gnu-linux-shell-scripting/images/logo.png" alt="Logo" width="150" height="80">
   </a>
 
   <h3 align="center">Simple Shell</h3>
@@ -134,9 +134,6 @@ execute.c  findcmd.c  _getenv.c  hsh  main.c  README.md  shell.h  token.c
 your_terminal@~$
 ```
 There we can ensure that all the memory allocated is properly free'd.
-
-### Creating A Pull Request
-
 
 
 ## Authors
