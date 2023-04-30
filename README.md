@@ -29,7 +29,7 @@
 
 ## About The Project
 
-![Screen Shot](ACA VA EL FLOWCHART DEL MAIN)
+![Screen Shot](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Copia_de_flowchart_shell.drawio.png/589px-Copia_de_flowchart_shell.drawio.png?20230430172048)
 
 The objective of this project is to create a custom version of the bash (Bourne Again Shell). Its purpose is to provide a command-line user interface for Unix-like operating systems, in other words is a program that executes other programs in response to text commands that the user enters.
 It can be used in both ```interactive``` and ```non-interactive``` modes, meaning it recognizes commands not only when the user "opens" its program but also when it's called by pipelines.
@@ -51,6 +51,7 @@ The repository containing this projects has these files:
 ```execute.c```: creates a process to execute the command specified by the user and executes it. It previously checks if the route to the command is specified or not.
 ```findcmd.c```: finds the route to the given command if the user didn't specify it.
 ```token.c```: tokenizes (splits) the command into an array of tokens.
+```built.c```: checks if the command is either ```env``` or ```exit``` built-ins. If it is, executes it.
 
 ### Installation, compiling and usage
 
