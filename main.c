@@ -8,7 +8,7 @@
  */
 int main(int ac, char **av)
 {
-	char *command_cpy = NULL, *shname = av[0];
+	char *shname = av[0];
 	char *path, *delim = " \n\t", *command = NULL, **argv;
 	int interactive = isatty(STDIN_FILENO);
 	size_t size = 0;
@@ -17,31 +17,26 @@ int main(int ac, char **av)
 
 	while (1)
 	{
-		path = get_env("PATH");
+		path = get_env("PATH"); /*getting the PATH*/
+
 		if (interactive == 1)
 			printf("$ ");
-
-		if (getline(&command, &size, stdin) == -1)
+		if (getline(&command, &size, stdin) == -1) /*storing the input in command*/
 		{
 			free(command);
 			if (path && strlen(path))
 				free(path);
 			exit(status);
 		}
-		if (!command)
-		{
-			free(path);
-			return (status);
-		}
+		argv = tokenizer(command, delim); /*splitting the command into tokens*/
 
-		command_cpy = strdup(command);
-		argv = tokenizer(command_cpy, delim);
-		b = built_call(command, command_cpy, argv, path, count);
+		/*checking for built-in commands in order to execute them*/
+		b = built_call(command, argv, path, count);
 		if (b == 1)
-			status = eway(command, command_cpy, argv, path, shname);
+			status = eway(command, argv, path, shname); /*executing the command*/
 		else
 			status = b;
-		free(command_cpy), free(argv);
+		free(argv);
 		count++;
 	}
 	return (status);

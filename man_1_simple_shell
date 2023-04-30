@@ -1,7 +1,7 @@
 .TH man 1 "28 Abril 2023" "simple_shell"
 
 .SH NAME
-.B ./hsh 
+.B ./hsh
 - Replica of the standard command language interpreter.
 
 .SH SYPNOSIS
