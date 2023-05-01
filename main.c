@@ -28,6 +28,11 @@ int main(int ac, char **av)
 				free(path);
 			exit(status);
 		}
+		if (!command)
+		{
+			free(path);
+			return (status);
+		}
 		argv = tokenizer(command, delim); /*splitting the command into tokens*/
 
 		/*checking for built-in commands in order to execute them*/
