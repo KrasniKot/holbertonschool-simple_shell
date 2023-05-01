@@ -15,6 +15,7 @@ char *get_env(char *env_name)
 
 	for (i = 0; environ[i]; i++)
 	{
+		/*splitting a duplicated environment variable into tokens*/
 		env_var = strdup(environ[i]);
 		var_name = strtok(env_var, "=");
 		if (!var_name)
@@ -26,9 +27,11 @@ char *get_env(char *env_name)
 		{
 			if (!(strcmp(var_name, env_name)))
 			{
+				/*if path is found*/
 				var_name = strtok(NULL, "=");
 				if (var_name)
 				{
+					/*returning the path variable string*/
 					env_value = strdup(var_name);
 					free(env_var);
 					return (env_value);
