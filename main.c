@@ -35,10 +35,8 @@ int main(int ac, char **av)
 		}
 
 		command_cpy = strdup(command);
-
 		/*splitting the command into tokens*/
 		argv = tokenizer(command_cpy, delim);
-
 		/*checking for built-in commands in order to execute them*/
 		b = built_call(command, command_cpy, argv, path, count);
 		if (b == 1)
