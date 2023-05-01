@@ -12,9 +12,11 @@ char **tokenizer(char *command, char *delim)
 	char **argv = NULL;
 	char *command_cpy = strdup(command), *token = strtok(command_cpy, delim);
 
+	/*counting the number of words in the string*/
 	for (argc = 1; token; argc++)
 		token = strtok(NULL, delim);
 
+	/*creating enough space to contain the splitted string*/
 	argv = malloc(sizeof(char *) * argc);
 	if (argv == NULL)
 		return (NULL);
@@ -22,6 +24,7 @@ char **tokenizer(char *command, char *delim)
 	free(command_cpy);
 	token = strtok(command, delim);
 
+	/*storing the splitted string into the double array*/
 	for (i = 0; token; i++)
 	{
 		argv[i] = token;

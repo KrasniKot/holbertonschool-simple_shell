@@ -18,7 +18,10 @@ char *findcmd(char *cmd, char *path)
 
 	if (path)
 	{
-		tpath = tokenizer(path, ":");
+		tpath = tokenizer(path, ":"); /*spliting the path ino tokens*/
+
+		/*putting an '/' and a null character at the beggining
+		 * and at the end respectively*/
 		u_cmd = malloc(sizeof(char) * (k + 2));
 		u_cmd[0] = 47;
 		for (i = 1; i <= k; i++)
@@ -26,18 +29,20 @@ char *findcmd(char *cmd, char *path)
 		u_cmd[k + 1] = '\0';
 		for (i = 0; tpath[i]; i++)
 		{
+			/*where will contain the current directory
+			 * and u_cmd concatenated*/
 			where = malloc(sizeof(char) * (k + 2 + strlen(tpath[i])));
 			strcpy(where, tpath[i]);
 			strcat(where, u_cmd);
-			if (!stat(where, &st))
+			if (!stat(where, &st))/*if the route exists*/
 			{
 				in = strcat(tpath[i], u_cmd);
 				free(tpath), free(u_cmd), free(where);
-				return (in);
+				return (in); /*return the location*/
 			}
 			free(where);
 		}
 		free(tpath), free(u_cmd);
 	}
-	return (NULL);
+	return (NULL); /*command has no location within the path directories*/
 }

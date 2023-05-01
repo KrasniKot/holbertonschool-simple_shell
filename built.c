@@ -15,7 +15,7 @@ int built_call(char *cmd, char *cmdcpy, char **av, char *path, int count)
 
 	if (av[0])
 	{
-		if (!strcmp(av[0], "exit"))
+		if (!strcmp(av[0], "exit")) /*checks if command is "exit"*/
 		{
 			if (av[1] || count > 0)
 			{
@@ -26,7 +26,7 @@ int built_call(char *cmd, char *cmdcpy, char **av, char *path, int count)
 			free(cmd), free(cmdcpy), free(av), free(path);
 			exit(EXIT_SUCCESS);
 		}
-		if (!strcmp(av[0], "env"))
+		if (!strcmp(av[0], "env")) /*checks if command is "env"*/
 		{
 			for (i = 0; environ[i]; i++)
 				printf("%s\n", environ[i]);
